@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController _controller = TextEditingController();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Latihan Navigation"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      "Bismillah, belajar menampilkan Snackbar",
+                    ),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              child: const Text('Show Snackbar'),
+            ),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text("Mohon Perhatian"),
+                        content: Text(
+                            "Perhatikan bahwa kebanyakan di flutter adalah Widget"),
+                      );
+                    });
+              },
+              child: const Text(
+                "Klik sini",
+                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(hintText: "Masukkan Nama"),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                var route = MaterialPageRoute(builder: (context) {
+                  return SecondPage(name: _controller.text);
+                });
+                Navigator.push(context, route);
+              },
+              child: const Text('Login'),
+            ),
+            const Text(
+              "Daftar",
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  const SecondPage({Key? key, required this.name}) : super(key: key);
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Halaman Kedua"),
+      ),
+      body: Center(
+        child: Text("Haii $name Anda berada di Halaman kedua"),
+      ),
+    );
+  }
+}
